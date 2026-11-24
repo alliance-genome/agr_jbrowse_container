@@ -20,7 +20,7 @@ RUN apt-get -qq update --fix-missing
 RUN apt-get --no-install-recommends -y install parallel genometools tabix unzip gpg-agent wget curl software-properties-common git build-essential zlib1g-dev libpng-dev perl-doc ca-certificates autoconf automake make gcc zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev libssl-dev
 
 #install AWS CLI
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m)-2.42.2.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
 
@@ -42,7 +42,7 @@ RUN node -v
 RUN npm -v
 
 #install JBrowse 2 cli (to get JBrowse-aware GFF sorting)
-RUN npm install -g @jbrowse/cli
+RUN npm install -g @jbrowse/cli@4.3.0
 
 RUN curl -L https://cpanmin.us | perl - App::cpanminus
 
@@ -63,7 +63,7 @@ RUN ./setup.sh
 WORKDIR /
 
 #install Bio::GFF3::LowLevel via cpanm
-RUN cpanm -v Bio::GFF3::LowLevel
+RUN cpanm -v RBUELS/Bio-GFF3-2.0.tar.gz
 
 
 #install genometools (via apt-get)
@@ -80,7 +80,7 @@ RUN cpanm -v Bio::GFF3::LowLevel
 RUN wget https://github.com/samtools/samtools/releases/download/1.12/samtools-1.12.tar.bz2
 RUN tar jxvf samtools-1.12.tar.bz2
 WORKDIR /samtools-1.12
-RUN  ./configure --without-curses ; make ; make install
+RUN  ./configure --without-curses && make && make install
 
 WORKDIR /
 
